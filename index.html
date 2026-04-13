@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QRIS All Payment Otomatis</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #000, #0a1f44);
+    color: white;
+    text-align: center;
+}
+
+/* Loading Screen */
+#loading {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: black;
+    color: yellow;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2em;
+    z-index: 999;
+}
+
+/* Main Content */
+.container {
+    padding: 20px;
+    display: none;
+}
+
+h1 {
+    color: yellow;
+}
+
+.time {
+    margin: 10px 0;
+    font-size: 18px;
+}
+
+button {
+    padding: 15px 30px;
+    font-size: 16px;
+    border: none;
+    border-radius: 10px;
+    background: yellow;
+    color: black;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    background: #00aaff;
+    color: white;
+}
+
+/* QRIS Image */
+#qris {
+    display: none;
+    margin-top: 20px;
+}
+
+#qris img {
+    width: 250px;
+    border-radius: 10px;
+    border: 3px solid yellow;
+}
+
+/* Timer */
+#timer {
+    margin-top: 15px;
+    font-size: 20px;
+    color: #00aaff;
+}
+
+/* Admin Message */
+#adminMsg {
+    display: none;
+    margin-top: 20px;
+    background: black;
+    padding: 15px;
+    border-radius: 10px;
+    border: 2px solid yellow;
+}
+</style>
+</head>
+
+<body>
+
+<!-- Loading -->
+<div id="loading">Loading...</div>
+
+<div class="container" id="main">
+    <h1>QRIS All Payment Otomatis</h1>
+
+    <div class="time" id="datetime"></div>
+
+    <button onclick="showQRIS()">Klik untuk Bayar</button>
+
+    <div id="qris">
+        <p>Scan QRIS di bawah ini:</p>
+        <img src="https://www.image2url.com/r2/default/images/1776097100043-b55fd065-2f5f-47a3-978d-02fdb09c90c9.jpg">
+        <div id="timer"></div>
+    </div>
+
+    <div id="adminMsg">
+        <p>Pembayaran lagi proses harap hubungi nomor admin di bawah ini</p>
+        <p><b>+6283847045358 
+        +6283172916537</b></p>
+    </div>
+</div>
+
+<script>
+// Loading 3 detik
+setTimeout(() => {
+    document.getElementById("loading").style.display = "none";
+    document.getElementById("main").style.display = "block";
+}, 3000);
+
+// Jam & tanggal otomatis
+function updateTime() {
+    const now = new Date();
+    document.getElementById("datetime").innerHTML =
+        now.toLocaleDateString("id-ID") + " | " +
+        now.toLocaleTimeString("id-ID");
+}
+setInterval(updateTime, 1000);
+
+// Tampilkan QRIS setelah 2 detik
+function showQRIS() {
+    document.getElementById("qris").style.display = "none";
+    document.getElementById("adminMsg").style.display = "none";
+
+    setTimeout(() => {
+        document.getElementById("qris").style.display = "block";
+        startTimer();
+    }, 2000);
+}
+
+// Timer 1 menit
+let countdown;
+function startTimer() {
+    let timeLeft = 60;
+    const timerEl = document.getElementById("timer");
+
+    countdown = setInterval(() => {
+        timerEl.innerHTML = "Sisa waktu: " + timeLeft + " detik";
+        timeLeft--;
+
+        if (timeLeft < 0) {
+            clearInterval(countdown);
+            resetPage();
+        }
+    }, 1000);
+}
+
+// Reset setelah 1 menit
+function resetPage() {
+    document.getElementById("qris").style.display = "none";
+    document.getElementById("adminMsg").style.display = "block";
+}
+</script>
+
+</body>
+</html>
